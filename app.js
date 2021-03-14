@@ -3,8 +3,8 @@ var app = express()
 
 var MongoClient = require('mongodb').MongoClient;
 
-//var url = 'mongodb://localhost:27017';
-var url =  "mongodb+srv://chungcoi000:123456abc@cluster0.qhgiq.mongodb.net/toyDB";
+var url = 'mongodb://localhost:27017';
+//var url =  "mongodb+srv://chungcoi000:123456abc@cluster0.qhgiq.mongodb.net/toyDB";
 
 var publicDir = require('path').join(__dirname,'/public');
 app.use(express.static(publicDir));
@@ -65,14 +65,24 @@ app.get('/',async (req,res)=>{
 app.get('/new',(req,res)=>{
     res.render('newProduct')
 })
+app.get('/error',(req,res)=>{
+    res.render('error')
+})
 app.post('/search',async (req,res)=>{
     let searchText = req.body.txtSearch;
     let client= await MongoClient.connect(url);
     let dbo = client.db("toyDB");
-    let results = await dbo.collection("pd").
+    var str = new String(searchText);
+    if (str.length < 3)
+    {
+        res.render('error')
+    }
+    else 
+    {
+        let results = await dbo.collection("pd").
         find({productName: new RegExp(searchText,'i')}).toArray();
-        
-    res.render('home',{model:results})
+        res.render('home',{model:results})
+    }
 })
 app.post('/insert',async (req,res)=>{
     let client= await MongoClient.connect(url);
