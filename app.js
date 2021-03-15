@@ -3,8 +3,8 @@ var app = express()
 
 var MongoClient = require('mongodb').MongoClient;
 
-var url = 'mongodb://localhost:27017';
-//var url =  "mongodb+srv://chungcoi000:123456abc@cluster0.qhgiq.mongodb.net/toyDB";
+//var url = 'mongodb://localhost:27017';
+var url =  "mongodb+srv://chungcoi000:123456abc@cluster0.qhgiq.mongodb.net/toyDB";
 
 var publicDir = require('path').join(__dirname,'/public');
 app.use(express.static(publicDir));
